@@ -16,9 +16,7 @@ package main
 import (
 	"flag"
 	"log"
-	"net/http"
 	"os"
-	"time"
 
 	"github.com/nats-io/nats.go"
 )
@@ -38,7 +36,7 @@ func showUsageAndExit(exitcode int) {
 }
 
 func main() {
-	var urls = flag.String("s", nats.DefaultURL,`default:"nats://localhost:4222"`)
+	var urls = flag.String("s", nats.DefaultURL, `default:"nats://localhost:4222"`)
 	var userCreds = flag.String("creds", "", "User Credentials File")
 	var showHelp = flag.Bool("h", false, "Show help message")
 	var reply = flag.String("reply", "", "Sets a specific reply subject")
