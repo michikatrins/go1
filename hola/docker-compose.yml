@@ -1,26 +1,36 @@
 version: '3'
 services:
   publisher:
-    # building image from ./Dockerfile
     build: .
     volumes:
-      - ./publisher:/app
+      - ./nats-pub:/app
     working_dir: /app
     env_file:
       - .env
-    # ports exposed to localhost
     ports:
-      - 5000:5000
+      - 5051:5051
+    depends_on:
+      - "servidornats"
+    networks:
+      - nats
 
   subscriber:
-    # building image from ./Dockerfile
     build: .
     volumes:
-      - ./subscriber:/app
+      - ./nats-sub:/app
     working_dir: /app
     env_file:
       - .env
+    networks:
+      - nats
 
-  nats:
+  servidornats:
     image: nats-streaming:0.16.2
     restart: on-failure
+    networks:
+      - nats
+    
+networks:
+  nats:
+    name: "nats"
+    driver: "bridge"

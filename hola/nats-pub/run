@@ -1,0 +1,3 @@
+go run nats-sub/main.go "nats"
+
+//aqui va a escuchar la api

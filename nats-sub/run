@@ -1,1 +1,0 @@
-go run nats-pub/main.go "hola" "snk te amo"

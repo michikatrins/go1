@@ -16,7 +16,9 @@ package main
 import (
 	"flag"
 	"log"
+	"net/http"
 	"os"
+	"time"
 
 	"github.com/nats-io/nats.go"
 )
@@ -34,13 +36,6 @@ func showUsageAndExit(exitcode int) {
 	usage()
 	os.Exit(exitcode)
 }
-
-type config struct {
-	Addr       string `envconfig:"ADDR" default:":8000"`
-	NatsAddr   string `envconfig:"NATS_ADDR" default:"nats://localhost:4222"`
-	StaticPath string `envconfig:"STATIC_PATH" default:"./posts"`
-}
-
 
 func main() {
 	var urls = flag.String("s", nats.DefaultURL,`default:"nats://localhost:4222"`)

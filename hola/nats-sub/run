@@ -1,0 +1,3 @@
+go run nats-pub/main.go "hola" "snk te amo"
+
+//aqui va a escuchar la api

@@ -1,6 +1,4 @@
-FROM golang
-WORKDIR /
-COPY . . 
-RUN go mod download
-EXPOSE 5051
-CMD ["go","run","api/api-server.go"]
+FROM golang:1.13.4-buster
+RUN go get github.com/cespare/reflex
+COPY reflex.conf /
+ENTRYPOINT ["reflex", "-c", "/reflex.conf"]
