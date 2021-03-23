@@ -2,16 +2,13 @@ package main
 
 import (
 	"crypto/rand"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"time"
-	"encoding/json"
-    "fmt"
-    "log"
-	"context"
 
 	"github.com/ThreeDotsLabs/watermill"
 	"github.com/ThreeDotsLabs/watermill-nats/pkg/nats"
@@ -21,8 +18,8 @@ import (
 )
 
 type covid struct {
-    Nombre     string
-    Apellido   string
+	Nombre   string
+	Apellido string
 }
 
 /*
@@ -49,8 +46,6 @@ type msg_COVID struct {
 	State        string
 	CAMINO       string
 }
-
-
 
 func startPublisher(natsURL, clusterID, addr, topic string) error {
 	publisher, err := nats.NewStreamingPublisher(
@@ -95,13 +90,14 @@ func (h handler) Handle(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h handler) publish(w http.ResponseWriter, r *http.Request) error {
-	/*
+
+	w.Header().Set("Content-Type", "application/json")
 	var body map[string]interface{}
 	err := json.NewDecoder(r.Body).Decode(&body)
-	failOnError(err, "Parsing JSON")
+	//failOnError(err, "Parsing JSON")
 	body["CAMINO"] = "NATS"
 	data, err := json.Marshal(body)
-	*/
+
 	payload, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		return err
@@ -112,17 +108,16 @@ func (h handler) publish(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 	/*
-	u1 := covid{payload}
-    json_data, err := json.Marshal(u1)
-    if err != nil {
+			u1 := covid{payload}
+		    json_data, err := json.Marshal(u1)
+		    if err != nil {
 
-        log.Fatal(err)
-    }
-    fmt.Println(string(json_data))
+		        log.Fatal(err)
+		    }
+		    fmt.Println(string(json_data))
 	*/
 
-	
-	_, err = fmt.Fprint(w, "Sent message: ", string(payload), " x ", msg.UUID, "\n")
+	_, err = fmt.Fprint(w, "Sent message: ", string(data), " x ", msg.UUID, "\n")
 	if err != nil {
 		return err
 	}
