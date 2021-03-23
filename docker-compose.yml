@@ -1,0 +1,36 @@
+version: '3'
+services:
+  publisher:
+    build: .
+    volumes:
+      - ./nats-pub:/app
+    working_dir: /app
+    env_file:
+      - .env
+    ports:
+      - 5051:5051
+    depends_on:
+      - "servidornats"
+    networks:
+      - nats
+
+  subscriber:
+    build: .
+    volumes:
+      - ./nats-sub:/app
+    working_dir: /app
+    env_file:
+      - .env
+    networks:
+      - nats
+
+  servidornats:
+    image: nats-streaming:0.16.2
+    restart: on-failure
+    networks:
+      - nats
+    
+networks:
+  nats:
+    name: "nats"
+    driver: "bridge"
