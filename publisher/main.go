@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"bytes"
 
 	"github.com/ThreeDotsLabs/watermill"
 	"github.com/ThreeDotsLabs/watermill-nats/pkg/nats"
@@ -116,8 +117,10 @@ func (h handler) publish(w http.ResponseWriter, r *http.Request) error {
 		    }
 		    fmt.Println(string(json_data))
 	*/
-
-	_, err = fmt.Fprint(w, "Sent message: ", string(data), " x ", msg.UUID, "\n")
+	postBody := []byte(string(data))
+	http.Post("http://104.196.23.85:80", "application/json", bytes.NewBuffer(postBody))
+	_, err = fmt.Fprint(w, string(data))
+	//_, err = fmt.Fprint(w, "Sent message: ", string(data), " x ", msg.UUID, "\n")
 	if err != nil {
 		return err
 	}
